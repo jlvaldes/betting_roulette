@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Roulette.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Roulette.Api.Controllers.RoulettaController.CreateRoulettaAsync">
+            <summary>
+            Creating a wheel of fortune
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
