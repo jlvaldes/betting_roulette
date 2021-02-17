@@ -3,12 +3,12 @@ using System;
 using System.Threading.Tasks;
 namespace Roulette.Data
 {
-    public abstract class AbstractRouletteMongoDbRepository : IRepository<Model.Roulette>
+    public abstract class AbstractRouletteMongoDbRepository : IRepository<IRoulette>
     {
         public StorageProvider StorageProvider => StorageProvider.MongoDb;
-        public abstract Task<Model.Roulette> CreateAsync(Model.Roulette entity);
-        public abstract Task<Model.Roulette> DeleteByIdAsync(Guid id);
-        public abstract Task<Model.Roulette> FindByIdAsync(Guid id);
-        public abstract Task<Model.Roulette> UpdateAsync(Model.Roulette entity);
+        public abstract Task<IRoulette> CreateAsync(IRoulette entity);
+        public abstract Task<IRoulette> DeleteByIdAsync(Guid id);
+        public abstract Task<IRoulette> FindByIdAsync(Guid id);
+        public abstract Task<IRoulette> UpdateAsync(IRoulette entity);
     }
 }

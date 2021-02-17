@@ -4,11 +4,26 @@
         <name>Roulette.Api</name>
     </assembly>
     <members>
-        <member name="M:Roulette.Api.Controllers.RoulettaController.CreateRoulettaAsync">
+        <member name="M:Roulette.Api.Controllers.RouletteController.CreateRoulettaAsync">
             <summary>
             Creating a wheel of fortune
             </summary>
-            <returns></returns>
+            <returns>Returns the ID of the created betting roulette</returns>
+        </member>
+        <member name="M:Roulette.Api.Controllers.RouletteController.OpenRoulettaAsync(System.Guid)">
+            <summary>
+            Opening a betting roulette
+            </summary>
+            <param name="id">Roulette ID</param>
+            <returns>Returns the status of the roulette opening operation</returns>
+        </member>
+        <member name="M:Roulette.Api.Controllers.RouletteController.BetRoulettaAsync(System.Guid,Roulette.Api.Models.Input{Roulette.Services.Model.BetInput})">
+            <summary>
+            To bet on a number and/or a color on a roulette wheel
+            </summary>
+            <param name="id">Roulette ID</param>
+            <param name="input">Request body</param>
+            <returns>Returns a model with the status of the execution of the bet</returns>
         </member>
     </members>
 </doc>

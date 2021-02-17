@@ -10,7 +10,7 @@ namespace Roulette.Api.Validators
             RuleFor(x => x.UserId)
                    .NotNull()
                    .WithSeverity(Severity.Error)
-                   .WithErrorCode(StatusCodes.Status400BadRequest.ToString())
+                   .WithErrorCode(StatusCodes.Status401Unauthorized.ToString())
                    .WithMessage("El identificador del usuario es un valor requerido");
         }
     }

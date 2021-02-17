@@ -5,19 +5,22 @@ namespace Roulette.Data
 {
     public sealed class BetMongoDbRepository : AbstractBetMongoDbRepository
     {
-        public override Task<Bet> CreateAsync(Bet entity)
+        public override Task<IBet> CreateAsync(IBet entity)
         {
             throw new NotImplementedException();
         }
-        public override Task<Bet> DeleteByIdAsync(Guid id)
+
+        public override Task<IBet> DeleteByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
-        public override Task<Bet> FindByIdAsync(Guid id)
+
+        public override Task<IBet> FindByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
-        public override Task<Bet> UpdateAsync(Bet entity)
+
+        public override Task<IBet> UpdateAsync(IBet entity)
         {
             throw new NotImplementedException();
         }

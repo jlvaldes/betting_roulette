@@ -5,5 +5,6 @@ namespace Roulette.Model
     {
         public List<string> Cors { get; set; }
         public ScaleUpStrategy ScaleUpStrategy { get; set; }
+        public StorageProvider StorageProvider { get; set; }
     }
 }

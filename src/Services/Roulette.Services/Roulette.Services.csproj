@@ -11,10 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Roulette.Model\Roulette.Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Model\" />
+    <ProjectReference Include="..\..\Data\Roulette.Data\Roulette.Data.csproj" />
   </ItemGroup>
 
 </Project>

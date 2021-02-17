@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 namespace Roulette.Model
 {
-    public class OperationResult
+    public class OperationResult : ICloneable
     {
         public List<string> Errors { get; set; }
         public List<string> Warnings { get; set; }
@@ -41,6 +41,16 @@ namespace Roulette.Model
         public string JoinErrorMessage()
         {
             return HasErrors ? string.Join(" ", Errors) : string.Empty;
+        }
+        public virtual object Clone()
+        {
+            return new OperationResult
+            {
+                Success = this.Success,
+                Errors = this.Errors,
+                Exception = this.Exception,
+                Warnings = this.Warnings
+            };
         }
     }
 }

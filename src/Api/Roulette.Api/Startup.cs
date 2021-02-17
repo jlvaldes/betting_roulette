@@ -112,10 +112,13 @@ namespace Roulette.Api
         }
         private IServiceCollection AddAllDependencies(IServiceCollection services)
         {
-            services.AddScoped<IRepository<Model.Roulette>, RouletteMongoDbRepository>();
-            services.AddScoped<IRepository<Model.Roulette>, RouletteRedisRepository>();
-            services.AddScoped<IRepository<Bet>, BetRedisRepository>();
-            services.AddScoped<IRepository<Bet>, BetMongoDbRepository>();
+            services.AddScoped<IBetColor, BetColor>();
+            services.AddScoped<IBetNumber, BetNumber>();
+            services.AddScoped<IRoulette, Model.Roulette>();
+            services.AddScoped<IRepository<IRoulette>, RouletteMongoDbRepository>();
+            services.AddScoped<IRepository<IRoulette>, RouletteRedisRepository>();
+            services.AddScoped<IRepository<IBet>, BetRedisRepository>();
+            services.AddScoped<IRepository<IBet>, BetMongoDbRepository>();
             services.AddSingleton<IRouletteService, RouletteService>();
             services.AddSingleton<IInstanceService, HostedInstanceService>();
             services.AddSingleton<IInstanceService, EmbeddedInstanceService>();
