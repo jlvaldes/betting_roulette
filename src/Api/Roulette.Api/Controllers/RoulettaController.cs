@@ -11,7 +11,6 @@ namespace Roulette.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        //[ProducesResponseType(typeof(OperationResult<BulkResult>), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateRoulettaAsync()
         {
             return Ok();
