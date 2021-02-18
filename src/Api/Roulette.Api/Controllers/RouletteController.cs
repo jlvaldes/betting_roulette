@@ -51,5 +51,17 @@ namespace Roulette.Api.Controllers
         {
             return Ok(await _rouletteService.BetAsync(id, input.UserId, input.Body));
         }
+        /// <summary>
+        /// Closing a betting roulette
+        /// </summary>
+        /// <param name="id">Roulette ID</param>
+        /// <returns></returns>
+        [Route("close/{id}")]
+        [HttpPost]
+        [ProducesResponseType(typeof(OperationResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> CloseRoulettaAsync(Guid id)
+        {
+            return Ok(await _rouletteService.CloseRouletteAsync(id));
+        }
     }
 }

@@ -25,5 +25,12 @@
             <param name="input">Request body</param>
             <returns>Returns a model with the status of the execution of the bet</returns>
         </member>
+        <member name="M:Roulette.Api.Controllers.RouletteController.CloseRoulettaAsync(System.Guid)">
+            <summary>
+            Closing a betting roulette
+            </summary>
+            <param name="id">Roulette ID</param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

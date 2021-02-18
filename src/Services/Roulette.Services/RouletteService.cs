@@ -36,5 +36,11 @@ namespace Roulette.Services
         {
             return await _instanceServices.First(x => x.ScaleUpStrategy == _rouletteSettings.ScaleUpStrategy).BetAsync(id, userId, body);
         }
+        public async Task<OperationDataResult<CloseRouletteResult>> CloseRouletteAsync(Guid id)
+        {
+            var result = new OperationDataResult<CloseRouletteResult>();
+            var closeResult = await _instanceServices.First(x => x.ScaleUpStrategy == _rouletteSettings.ScaleUpStrategy).CloseRouletteAsync(id);
+            return result;
+        }
     }
 }

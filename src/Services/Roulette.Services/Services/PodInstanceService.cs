@@ -17,18 +17,19 @@ namespace Roulette.Services.Services
         {
             throw new NotImplementedException();
         }
-
         public Task<OperationResult> OpenRouletteAsync(Guid id)
         {
             throw new NotImplementedException();
         }
-
         public Task<OperationResult> BetAsync(Guid id, int userId, BetInput body)
         {
             throw new NotImplementedException();
         }
-
         public Task<OperationResult> BetAsync(Guid id, Guid userId, BetInput body)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<OperationDataResult<CloseRouletteResult>> CloseRouletteAsync(Guid id)
         {
             throw new NotImplementedException();
         }

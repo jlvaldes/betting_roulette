@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Roulette.Api.Middlewares;
 using Roulette.Data;
+using Roulette.Data.Providers.MongoDb;
 using Roulette.Model;
 using Roulette.Services;
 using Roulette.Services.Services;
@@ -112,6 +113,7 @@ namespace Roulette.Api
         }
         private IServiceCollection AddAllDependencies(IServiceCollection services)
         {
+            services.AddScoped<IMongoDb, MongoDb>();
             services.AddScoped<IBetColor, BetColor>();
             services.AddScoped<IBetNumber, BetNumber>();
             services.AddScoped<IRoulette, Model.Roulette>();

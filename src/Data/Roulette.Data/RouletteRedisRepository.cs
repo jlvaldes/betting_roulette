@@ -1,5 +1,7 @@
-﻿using Roulette.Model;
+﻿using Roulette.Data.Providers.Redis;
+using Roulette.Model;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 namespace Roulette.Data
 {
@@ -7,20 +9,33 @@ namespace Roulette.Data
     {
         public override Task<IRoulette> CreateAsync(IRoulette entity)
         {
-            throw new NotImplementedException();
+            return Task.Run(() =>
+            {
+                Redis.SaveObject(entity);
+                return entity;
+            });
         }
-
-        public override Task<IRoulette> DeleteByIdAsync(Guid id)
+        public async override Task DeleteByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await Redis.DeleteObjectAsync(id);
         }
-
         public override Task<IRoulette> FindByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
+            return Task.Run(() =>
+            {
+                return Redis.GetObject<IRoulette>(id);
+            });
 
+        }
         public override Task<IRoulette> UpdateAsync(IRoulette entity)
+        {
+            return Task.Run(() =>
+            {
+                Redis.SaveObject(entity);
+                return entity;
+            });
+        }
+        public override Task<IEnumerable<IRoulette>> FindByStringsFiltersAsync(Dictionary<string, string> filters)
         {
             throw new NotImplementedException();
         }

@@ -82,5 +82,24 @@ namespace Roulette.Services.Services
             }
             return result;
         }
+        public async Task<OperationDataResult<CloseRouletteResult>> CloseRouletteAsync(Guid id)
+        {
+            var result = new OperationDataResult<CloseRouletteResult>();
+            var rouletteStorage = _rouletteRepositories.First(x => x.StorageProvider == _rouletteSettings.StorageProvider);
+            var roulette = await rouletteStorage.FindByIdAsync(id);
+            if (roulette != null)
+            {
+                roulette.RouletteStatus = RouletteStatus.Closed;
+                await rouletteStorage.UpdateAsync(roulette);
+                var numberWinner = new Random().Next(_rouletteSettings.MinNumberBet, _rouletteSettings.MaxNumberBet);
+                var betStorage = _betRepositories.First(x => x.StorageProvider == _rouletteSettings.StorageProvider);
+                var bets = await betStorage.FindByStringsFiltersAsync(new Dictionary<string, string> { });
+            }
+            else
+            {
+                result.Success = false;
+            }
+            return result;
+        }
     }
 }

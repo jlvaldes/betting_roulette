@@ -10,5 +10,6 @@ namespace Roulette.Services
         Task<OperationDataResult<IRoulette>> CreateNewRouletteAsync();
         Task<OperationResult> OpenRouletteAsync(Guid id);
         Task<OperationResult> BetAsync(Guid id, Guid userId, BetInput body);
+        Task<OperationDataResult<CloseRouletteResult>> CloseRouletteAsync(Guid id);
     }
 }

@@ -32,5 +32,8 @@
     <ProjectReference Include="..\..\Data\Roulette.Data\Roulette.Data.csproj" />
     <ProjectReference Include="..\..\Services\Roulette.Services\Roulette.Services.csproj" />
   </ItemGroup>
+	<ItemGroup>
+		<DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
+	</ItemGroup>
 
 </Project>

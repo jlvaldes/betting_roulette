@@ -1,5 +1,6 @@
 ﻿using Roulette.Model;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 namespace Roulette.Data
 {
@@ -7,8 +8,9 @@ namespace Roulette.Data
     {
         StorageProvider StorageProvider { get; }
         Task<T> FindByIdAsync(Guid id);
-        Task<T> DeleteByIdAsync(Guid id);
+        Task DeleteByIdAsync(Guid id);
         Task<T> CreateAsync(T entity);
         Task<T> UpdateAsync(T entity);
+        Task<IEnumerable<T>> FindByStringsFiltersAsync(Dictionary<string, string> filters);
     }
 }

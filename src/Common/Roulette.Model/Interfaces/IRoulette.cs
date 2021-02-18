@@ -1,9 +1,8 @@
 ﻿using System;
 namespace Roulette.Model
 {
-    public interface IRoulette
+    public interface IRoulette : IGuidable
     {
-        Guid Id { get; set; }
         int WinningNumber { get; set; }
         Color WinningColor { get; set; }
         RouletteStatus RouletteStatus { get; set; }
