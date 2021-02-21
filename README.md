@@ -1,2 +1,2 @@
-# betting_roulette
-Betting Roulette API
+# Roulette betting
+Services API for betting on roulette games
