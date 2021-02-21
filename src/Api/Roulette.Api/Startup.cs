@@ -14,7 +14,6 @@ using Roulette.Services.Services;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.IO;
-using System.Reflection;
 namespace Roulette.Api
 {
     public class Startup
@@ -26,78 +25,42 @@ namespace Roulette.Api
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(_configuration);
-            AddOpenApi(services);
-            ConfigureApiServices(services, _configuration);
-            AddAllDependencies(services);
-        }
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            app.UseRouting()
-            .UseEndpoints(endpoints =>
+            services.Configure<RouletteSettings>(_configuration.GetSection(nameof(RouletteSettings)));
+            var rouletteSettings = _configuration.GetSection(nameof(RouletteSettings)).Get<RouletteSettings>();
+            if (rouletteSettings.RouletteMongoDbSettings == null || string.IsNullOrEmpty(rouletteSettings.RouletteMongoDbSettings.ConnectionString) ||
+                rouletteSettings.BetMongoDbSettings == null || string.IsNullOrEmpty(rouletteSettings.BetMongoDbSettings.ConnectionString))
             {
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
-            })
-            .UseStaticFiles()
-            .UseSwagger()
-            .UseSwaggerUI(options =>
-            {
-                options.ShowExtensions();
-                options.DisplayRequestDuration();
-                options.DocExpansion(DocExpansion.None);
-                options.DocumentTitle = "Roulette API - powered jlvaldes";
-                options.EnableDeepLinking();
-                options.EnableFilter();
-                options.EnableValidator();
-                options.SwaggerEndpoint($"/swagger/v1/swagger.json", "v1");
-                options.RoutePrefix = string.Empty;
-            });
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
+                throw new Exception("Debe configurar los parámetros de conexión al storage MongoDb en el appsetting");
             }
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables();
-            _configuration = builder.Build();
-        }
-        private IServiceCollection AddOpenApi(IServiceCollection services)
-        {
-            return services.AddSwaggerGen(c =>
-            {
-                var apiName = "Roulette API";
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = $"{apiName} - powered by jlvaldes",
-                    Description = $"{apiName} - powered by jlvaldes",
-                    TermsOfService = new Uri("https://github.com/jlvaldes"),
-                    Contact = new OpenApiContact
-                    {
-                        Name = apiName,
-                        Email = string.Empty,
-                        Url = new Uri("https://github.com/jlvaldes"),
-                    }
-                });
-                var xmlFile = "Roulette.Api.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-            });
-        }
-        public IServiceCollection ConfigureApiServices(IServiceCollection services, IConfiguration _configuration)
-        {
-            var apiSettings = _configuration.GetSection(nameof(RouletteSettings)).Get<RouletteSettings>();
-            return services
-                .AddSingleton<IHttpErrorFactory, HttpErrorFactory>()
+            services
                 .AddMvcCore()
                 .AddApiExplorer()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly())).Services
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>()).Services
                 .AddApplicationInsightsTelemetry(_configuration)
+                .AddSwaggerGen(c =>
+                {
+                    var apiName = "Roulette API";
+                    c.SwaggerDoc("v1", new OpenApiInfo
+                    {
+                        Version = "v1",
+                        Title = $"{apiName} - powered by jlvaldes",
+                        Description = $"{apiName} - powered by jlvaldes",
+                        TermsOfService = new Uri("https://github.com/jlvaldes"),
+                        Contact = new OpenApiContact
+                        {
+                            Name = apiName,
+                            Email = string.Empty,
+                            Url = new Uri("https://github.com/jlvaldes"),
+                        }
+                    });
+                    var xmlFile = "Roulette.Api.xml";
+                    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                    c.IncludeXmlComments(xmlPath);
+                })
+                .AddSingleton<IHttpErrorFactory, HttpErrorFactory>()
                 .AddCors(o => o.AddPolicy("AllRequests", builder =>
                 {
-                    foreach (var cors in apiSettings.Cors)
+                    foreach (var cors in rouletteSettings.Cors)
                     {
                         builder.WithOrigins(cors).
                         AllowAnyHeader().
@@ -110,20 +73,53 @@ namespace Roulette.Api
                     options.MimeTypes = new[] { "text/plain", "application/json" };
                 })
                 .AddHealthCheck();
+            AddAllDependencies(services);
+        }
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseRouting()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
+                })
+                .UseStaticFiles()
+                .UseSwagger()
+                .UseSwaggerUI(options =>
+                {
+                    options.ShowExtensions();
+                    options.DisplayRequestDuration();
+                    options.DocExpansion(DocExpansion.None);
+                    options.DocumentTitle = "Roulette API - powered jlvaldes";
+                    options.EnableDeepLinking();
+                    options.EnableFilter();
+                    options.EnableValidator();
+                    options.SwaggerEndpoint($"/swagger/v1/swagger.json", "v1");
+                    options.RoutePrefix = string.Empty;
+                })
+                .UseResponseCompression()
+                .UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables();
+            _configuration = builder.Build();
         }
         private IServiceCollection AddAllDependencies(IServiceCollection services)
         {
             services.AddScoped<IMongoDb, MongoDb>();
-            services.AddScoped<IBetColor, BetColor>();
-            services.AddScoped<IBetNumber, BetNumber>();
+            services.AddScoped<IBet, Bet>();
             services.AddScoped<IRoulette, Model.Roulette>();
-            services.AddScoped<IRepository<IRoulette>, RouletteMongoDbRepository>();
+            services.AddScoped<IRepository<Model.Roulette>, RouletteMongoDbRepository>();
             services.AddScoped<IRepository<IRoulette>, RouletteRedisRepository>();
             services.AddScoped<IRepository<IBet>, BetRedisRepository>();
-            services.AddScoped<IRepository<IBet>, BetMongoDbRepository>();
-            services.AddSingleton<IRouletteService, RouletteService>();
-            services.AddSingleton<IInstanceService, HostedInstanceService>();
-            services.AddSingleton<IInstanceService, EmbeddedInstanceService>();
+            services.AddScoped<IRepository<Bet>, BetMongoDbRepository>();
+            services.AddScoped<IRouletteService, RouletteService>();
+            services.AddScoped<IInstanceService, EmbeddedInstanceService>();
             return services;
         }
     }

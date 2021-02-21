@@ -1,16 +1,15 @@
 ﻿using Roulette.Model;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 namespace Roulette.Data
 {
-    public abstract class AbstractRouletteMongoDbRepository : IRepository<IRoulette>
+    public abstract class AbstractRouletteMongoDbRepository : IRepository<Model.Roulette>
     {
         public StorageProvider StorageProvider => StorageProvider.MongoDb;
-        public abstract Task<IRoulette> CreateAsync(IRoulette entity);
-        public abstract Task DeleteByIdAsync(Guid id);
-        public abstract Task<IRoulette> FindByIdAsync(Guid id);
-        public abstract Task<IEnumerable<IRoulette>> FindByStringsFiltersAsync(Dictionary<string, string> filters);
-        public abstract Task<IRoulette> UpdateAsync(IRoulette entity);
+        public abstract Task<Model.Roulette> CreateAsync(Model.Roulette entity);
+        public abstract Task DeleteByCodeAsync(string code);
+        public abstract Task<Model.Roulette> FindByCodeAsync(string code);
+        public abstract Task<IEnumerable<Model.Roulette>> FindByStringsFiltersAsync(Dictionary<string, string> filters);
+        public abstract Task<Model.Roulette> UpdateAsync(Model.Roulette entity);
     }
 }

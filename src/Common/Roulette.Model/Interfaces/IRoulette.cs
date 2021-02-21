@@ -1,14 +1,11 @@
-﻿using System;
-namespace Roulette.Model
+﻿namespace Roulette.Model
 {
-    public interface IRoulette : IGuidable
+    public interface IRoulette : ICodificable
     {
         int WinningNumber { get; set; }
         Color WinningColor { get; set; }
         RouletteStatus RouletteStatus { get; set; }
         IRoulette OpenRoullete();
         IRoulette CloseRoullete();
-        void OpenBetColor(IBetColor betColor);
-        void OpenBetNumber(IBetNumber betNumber);
     }
 }

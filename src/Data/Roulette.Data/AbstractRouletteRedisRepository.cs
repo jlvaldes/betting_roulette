@@ -1,5 +1,4 @@
 ﻿using Roulette.Model;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 namespace Roulette.Data
@@ -8,8 +7,8 @@ namespace Roulette.Data
     {
         public StorageProvider StorageProvider => StorageProvider.Redis;
         public abstract Task<IRoulette> CreateAsync(IRoulette entity);
-        public abstract Task DeleteByIdAsync(Guid id);
-        public abstract Task<IRoulette> FindByIdAsync(Guid id);
+        public abstract Task DeleteByCodeAsync(string code);
+        public abstract Task<IRoulette> FindByCodeAsync(string code);
         public abstract Task<IEnumerable<IRoulette>> FindByStringsFiltersAsync(Dictionary<string, string> filters);
         public abstract Task<IRoulette> UpdateAsync(IRoulette entity);
     }

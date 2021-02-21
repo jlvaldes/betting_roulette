@@ -20,21 +20,21 @@ namespace Roulette.Data.Providers.Redis
             });
             isInitialized = true;
         }
-        public static void SaveObject<T>(T objToSave) where T : IGuidable
+        public static void SaveObject<T>(T objToSave) where T : ICodificable
         {
             
             var redisDatabase = _lazyConnection.Value.GetDatabase();
-            redisDatabase.StringSet(objToSave.Id.ToString(), JsonConvert.SerializeObject(objToSave));
+            redisDatabase.StringSet(objToSave.Code, JsonConvert.SerializeObject(objToSave));
         }
-        public static T GetObject<T>(Guid id)
+        public static T GetObject<T>(string code)
         {
             var redisDatabase = _lazyConnection.Value.GetDatabase();
-            return JsonConvert.DeserializeObject<T>(redisDatabase.StringGet(id.ToString()));
+            return JsonConvert.DeserializeObject<T>(redisDatabase.StringGet(code));
         }
-        public async static Task DeleteObjectAsync(Guid id)
+        public async static Task DeleteObjectAsync(string code)
         {
             var redisDatabase = _lazyConnection.Value.GetDatabase();
-            await redisDatabase.KeyDeleteAsync(id.ToString());
+            await redisDatabase.KeyDeleteAsync(code);
         }
     }
 }

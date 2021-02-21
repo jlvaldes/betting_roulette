@@ -16,51 +16,57 @@ namespace Roulette.Data
             _mongoDb = mongoDb;
             _rouletteMongoDbSettings = rouleteSettings.Value.RouletteMongoDbSettings;
         }
-        public override async Task<IRoulette> CreateAsync(IRoulette entity)
+        public override async Task<Model.Roulette> CreateAsync(Model.Roulette entity)
         {
             await _mongoDb.InsertItemAsync(entity, _rouletteMongoDbSettings);
             return entity;
         }
-        public async override Task DeleteByIdAsync(Guid id)
+        public async override Task DeleteByCodeAsync(string code)
         {
             await _mongoDb.DeleteItemsAsync(new List<MongoDbFilter>
             {
                 new MongoDbFilter 
                 {
                     FieldName = "Id",
-                    Value = id.ToString(),
+                    Value = code,
                     Operator = FilterOperator.Equal
                 } 
             }, _rouletteMongoDbSettings);
         }
-        public async override Task<IRoulette> FindByIdAsync(Guid id)
+        public async override Task<Model.Roulette> FindByCodeAsync(string code)
         {
-            return (await _mongoDb.GetItemsAsync<IRoulette>(new List<MongoDbFilter>
+            return (await _mongoDb.GetItemsAsync<Model.Roulette>(new List<MongoDbFilter>
             {
                 new MongoDbFilter
                 {
-                    FieldName = "Id",
-                    Value = id.ToString(),
+                    FieldName = "Code",
+                    Value = code,
                     Operator = FilterOperator.Equal
                 }
             }, _rouletteMongoDbSettings)).FirstOrDefault();
         }
-        public async override Task<IRoulette> UpdateAsync(IRoulette entity)
+        public async override Task<Model.Roulette> UpdateAsync(Model.Roulette entity)
         {
-            await _mongoDb.UpdateItemsAsync(new List<MongoDbFilter>
+            await _mongoDb.DeleteItemsAsync(new List<MongoDbFilter>
             {
                 new MongoDbFilter
                 {
-                    FieldName = "Id",
-                    Value = entity.Id.ToString(),
+                    FieldName = "Code",
+                    Value = entity.Code,
                     Operator = FilterOperator.Equal
                 }
-            }, entity, _rouletteMongoDbSettings);
+            }, _rouletteMongoDbSettings);
+            await _mongoDb.InsertItemAsync(entity, _rouletteMongoDbSettings);
             return entity;
         }
-        public override Task<IEnumerable<IRoulette>> FindByStringsFiltersAsync(Dictionary<string, string> filters)
+        public override async Task<IEnumerable<Model.Roulette>> FindByStringsFiltersAsync(Dictionary<string, string> filters)
         {
-            throw new NotImplementedException();
+            return await _mongoDb.GetItemsAsync<Model.Roulette>(filters?.Select(x => new MongoDbFilter
+            {
+                FieldName = x.Key,
+                Value = x.Value,
+                Operator = FilterOperator.Equal
+            }).ToList(), _rouletteMongoDbSettings);
         }
     }
 }

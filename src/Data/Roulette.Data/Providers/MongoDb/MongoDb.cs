@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using Roulette.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 namespace Roulette.Data.Providers.MongoDb
 {
@@ -15,7 +16,9 @@ namespace Roulette.Data.Providers.MongoDb
         }
         public async Task<List<T>> GetItemsAsync<T>(IEnumerable<MongoDbFilter> filters, MongoDbSettings mongoDbSettings)
         {
-            var data = await GetCollectionDatabase(mongoDbSettings).Find(SerializeFilter(filters)).Project(Builders<BsonDocument>.Projection.Exclude("_id")).ToListAsync();
+            var data = filters != null && filters.Any()
+                ? await GetCollectionDatabase(mongoDbSettings).Find(SerializeFilter(filters)).Project(Builders<BsonDocument>.Projection.Exclude("_id").Exclude("_t")).ToListAsync()
+                : await GetCollectionDatabase(mongoDbSettings).Find(Builders<BsonDocument>.Filter.Empty).Project(Builders<BsonDocument>.Projection.Exclude("_id").Exclude("_t")).ToListAsync();
             List<T> returnList = new List<T>();
             foreach (var l in data)
             {

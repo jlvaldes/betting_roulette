@@ -1,6 +1,6 @@
 ﻿using Roulette.Model;
 using Roulette.Services.Model;
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 namespace Roulette.Services
 {
@@ -8,8 +8,9 @@ namespace Roulette.Services
     {
         ScaleUpStrategy ScaleUpStrategy { get; }
         Task<OperationDataResult<IRoulette>> CreateNewRouletteAsync();
-        Task<OperationResult> OpenRouletteAsync(Guid id);
-        Task<OperationResult> BetAsync(Guid id, Guid userId, BetInput body);
-        Task<OperationDataResult<CloseRouletteResult>> CloseRouletteAsync(Guid id);
+        Task<OperationResult> OpenRouletteAsync(string rouletteCode);
+        Task<OperationResult> BetAsync(string rouletteCode, string userId, BetInput body);
+        Task<OperationDataResult<CloseRouletteResult>> CloseRouletteAsync(string rouletteCode);
+        Task<OperationDataResult<IEnumerable<Roulette.Model.Roulette>>> GetRouletteListAsync();
     }
 }

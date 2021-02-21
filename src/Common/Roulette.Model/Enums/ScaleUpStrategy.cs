@@ -2,8 +2,7 @@
 {
     public enum ScaleUpStrategy
     {
-        Embedded = 0,
-        Hosted = 1,
-        Container = 2
+        Monolithic = 0,
+        Pipelines = 1
     }
 }

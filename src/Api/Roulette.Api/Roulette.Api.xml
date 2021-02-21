@@ -8,28 +8,35 @@
             <summary>
             Creating a wheel of fortune
             </summary>
-            <returns>Returns the ID of the created betting roulette</returns>
+            <returns>Returns the code of the created betting roulette</returns>
         </member>
-        <member name="M:Roulette.Api.Controllers.RouletteController.OpenRoulettaAsync(System.Guid)">
+        <member name="M:Roulette.Api.Controllers.RouletteController.GetRouletteListAsync">
+            <summary>
+            Get roulette list
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Roulette.Api.Controllers.RouletteController.OpenRoulettaAsync(System.String)">
             <summary>
             Opening a betting roulette
             </summary>
-            <param name="id">Roulette ID</param>
+            <param name="rouletteCode">Roulette code</param>
             <returns>Returns the status of the roulette opening operation</returns>
         </member>
-        <member name="M:Roulette.Api.Controllers.RouletteController.BetRoulettaAsync(System.Guid,Roulette.Api.Models.Input{Roulette.Services.Model.BetInput})">
+        <member name="M:Roulette.Api.Controllers.RouletteController.BetRoulettaAsync(System.String,Roulette.Services.Model.BetInput,System.String)">
             <summary>
             To bet on a number and/or a color on a roulette wheel
             </summary>
-            <param name="id">Roulette ID</param>
+            <param name="rouletteCode">Roulette code</param>
             <param name="input">Request body</param>
+            <param name="userId">User ID</param>
             <returns>Returns a model with the status of the execution of the bet</returns>
         </member>
-        <member name="M:Roulette.Api.Controllers.RouletteController.CloseRoulettaAsync(System.Guid)">
+        <member name="M:Roulette.Api.Controllers.RouletteController.CloseRoulettaAsync(System.String)">
             <summary>
             Closing a betting roulette
             </summary>
-            <param name="id">Roulette ID</param>
+            <param name="rouletteCode">Roulette ID</param>
             <returns></returns>
         </member>
     </members>

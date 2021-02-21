@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Roulette.Model;
 using Roulette.Services.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,25 +21,27 @@ namespace Roulette.Services
             return new OperationDataResult<CreateRouletteResult>
             {
                 Success = result.Success,
-                Data = result.Success ? new CreateRouletteResult { RouletteId = result.Data.Id} : null,
+                Data = result.Success ? new CreateRouletteResult { RouletteCode = result.Data.Code} : null,
                 Errors = result.Errors,
                 Exception = result.Exception,
                 Warnings = result.Warnings
             };
         }
-        public async Task<OperationResult> OpenRouletteAsync(Guid id)
+        public async Task<OperationResult> OpenRouletteAsync(string rouletteCode)
         {
-            return await _instanceServices.First(x => x.ScaleUpStrategy == _rouletteSettings.ScaleUpStrategy).OpenRouletteAsync(id);
+            return await _instanceServices.First(x => x.ScaleUpStrategy == _rouletteSettings.ScaleUpStrategy).OpenRouletteAsync(rouletteCode);
         }
-        public async Task<OperationResult> BetAsync(Guid id, Guid userId, BetInput body)
+        public async Task<OperationResult> BetAsync(string rouletteCode, string userId, BetInput body)
         {
-            return await _instanceServices.First(x => x.ScaleUpStrategy == _rouletteSettings.ScaleUpStrategy).BetAsync(id, userId, body);
+            return await _instanceServices.First(x => x.ScaleUpStrategy == _rouletteSettings.ScaleUpStrategy).BetAsync(rouletteCode, userId, body);
         }
-        public async Task<OperationDataResult<CloseRouletteResult>> CloseRouletteAsync(Guid id)
+        public async Task<OperationDataResult<CloseRouletteResult>> CloseRouletteAsync(string rouletteCode)
         {
-            var result = new OperationDataResult<CloseRouletteResult>();
-            var closeResult = await _instanceServices.First(x => x.ScaleUpStrategy == _rouletteSettings.ScaleUpStrategy).CloseRouletteAsync(id);
-            return result;
+            return await _instanceServices.First(x => x.ScaleUpStrategy == _rouletteSettings.ScaleUpStrategy).CloseRouletteAsync(rouletteCode);
+        }
+        public async Task<OperationDataResult<IEnumerable<Roulette.Model.Roulette>>> GetRouletteListAsync()
+        {
+            return await _instanceServices.First(x => x.ScaleUpStrategy == _rouletteSettings.ScaleUpStrategy).GetRouletteListAsync();
         }
     }
 }

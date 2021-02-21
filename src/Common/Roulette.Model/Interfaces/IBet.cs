@@ -1,10 +1,11 @@
-﻿using System;
-namespace Roulette.Model
+﻿namespace Roulette.Model
 {
-    public interface IBet : IGuidable
+    public interface IBet : ICodificable
     {
-        Guid UserId { get; set; }
-        Guid RouletteId { get; set; }
-        int AmountToBet { get; set; }
+        string UserId { get; set; }
+        string RouletteCode { get; set; }
+        double AmountToBet { get; set; }
+        string Number { get; set; }
+        string Color { get; set; }
     }
 }

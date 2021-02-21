@@ -4,14 +4,10 @@ namespace Roulette.Model
 {
     public sealed class Roulette : IRoulette
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public string Code { get; set; } = Guid.NewGuid().ToString();
         public int WinningNumber { get; set; }
         public Color WinningColor { get; set; }
-        public int BetColorCount { get; set; }
-        public int BetNumberCount { get; set; }
         public RouletteStatus RouletteStatus { get; set; }
-        public int TotalAmountBetColor { get; set; }
-        public int TotalAmountBetNumber { get; set; }
         public IRoulette OpenRoullete()
         {
             return new Roulette();
@@ -23,16 +19,6 @@ namespace Roulette.Model
             this.WinningColor = (Color)ramdom.Next(0, 1);
             this.RouletteStatus = RouletteStatus.Closed;
             return this;
-        }
-        public void OpenBetColor(IBetColor betColor)
-        {
-            this.BetColorCount++;
-            this.TotalAmountBetColor += betColor.AmountToBet;
-        }
-        public void OpenBetNumber(IBetNumber betNumber)
-        {
-            this.BetNumberCount++;
-            this.TotalAmountBetNumber += betNumber.AmountToBet;
         }
     }
 }

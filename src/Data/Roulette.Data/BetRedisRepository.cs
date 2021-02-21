@@ -15,15 +15,15 @@ namespace Roulette.Data
                 return entity;
             });
         }
-        public async override Task DeleteByIdAsync(Guid id)
+        public async override Task DeleteByCodeAsync(string code)
         {
-            await Redis.DeleteObjectAsync(id);
+            await Redis.DeleteObjectAsync(code);
         }
-        public override Task<IBet> FindByIdAsync(Guid id)
+        public override Task<IBet> FindByCodeAsync(string code)
         {
             return Task.Run(() =>
             {
-                return Redis.GetObject<IBet>(id);
+                return Redis.GetObject<IBet>(code);
             });
             
         }

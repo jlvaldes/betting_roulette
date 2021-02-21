@@ -1,8 +1,7 @@
-﻿using System;
-namespace Roulette.Services.Model
+﻿namespace Roulette.Services.Model
 {
     public class CreateRouletteResult
     {
-        public Guid RouletteId { get; set; }
+        public string RouletteCode { get; set; }
     }
 }

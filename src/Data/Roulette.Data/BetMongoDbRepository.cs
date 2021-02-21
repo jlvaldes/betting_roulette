@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Roulette.Data.Providers.MongoDb;
 using Roulette.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,52 +15,52 @@ namespace Roulette.Data
             _mongoDb = mongoDb;
             _betMongoDbSettings = rouleteSettings.Value.BetMongoDbSettings;
         }
-        public async override Task<IBet> CreateAsync(IBet entity)
+        public async override Task<Bet> CreateAsync(Bet entity)
         {
             await _mongoDb.InsertItemAsync(entity, _betMongoDbSettings);
             return entity;
         }
-        public async override Task DeleteByIdAsync(Guid id)
+        public async override Task DeleteByCodeAsync(string code)
         {
             await _mongoDb.DeleteItemsAsync(new List<MongoDbFilter>
             {
                 new MongoDbFilter
                 {
-                    FieldName = "Id",
-                    Value = id.ToString(),
+                    FieldName = "Code",
+                    Value = code,
                     Operator = FilterOperator.Equal
                 }
             }, _betMongoDbSettings);
         }
-        public async override Task<IBet> FindByIdAsync(Guid id)
+        public async override Task<Bet> FindByCodeAsync(string code)
         {
-            return (await _mongoDb.GetItemsAsync<IBet>(new List<MongoDbFilter>
+            return (await _mongoDb.GetItemsAsync<Bet>(new List<MongoDbFilter>
             {
                 new MongoDbFilter
                 {
-                    FieldName = "Id",
-                    Value = id.ToString(),
+                    FieldName = "Code",
+                    Value = code,
                     Operator = FilterOperator.Equal
                 }
             }, _betMongoDbSettings)).FirstOrDefault();
         }
-        public async override Task<IEnumerable<IBet>> FindByStringsFiltersAsync(Dictionary<string, string> filters)
+        public async override Task<IEnumerable<Bet>> FindByStringsFiltersAsync(Dictionary<string, string> filters)
         {
-            return await _mongoDb.GetItemsAsync<IBet>(filters.Select(x => new MongoDbFilter
+            return await _mongoDb.GetItemsAsync<Bet>(filters.Select(x => new MongoDbFilter
             {
                 FieldName = x.Key,
                 Value = x.Value,
                 Operator = FilterOperator.Equal
             }).ToList(), _betMongoDbSettings);
         }
-        public async override Task<IBet> UpdateAsync(IBet entity)
+        public async override Task<Bet> UpdateAsync(Bet entity)
         {
             await _mongoDb.UpdateItemsAsync(new List<MongoDbFilter>
             {
                 new MongoDbFilter
                 {
-                    FieldName = "Id",
-                    Value = entity.Id.ToString(),
+                    FieldName = "Code",
+                    Value = entity.Code,
                     Operator = FilterOperator.Equal
                 }
             }, entity, _betMongoDbSettings);
